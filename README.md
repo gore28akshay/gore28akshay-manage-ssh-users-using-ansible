@@ -35,3 +35,8 @@
 2. Add usernames in respective files in group_vars folder
 3. Sample command to run playbook
 ```ansible-playbook -i inv/prod/infra playbooks/site.yaml```
+
+### To be done ###
+* Add roles for basic package installations.
+* Add more detailed explanation on structure of repo.
+* Add files to manage servers in other environments.
