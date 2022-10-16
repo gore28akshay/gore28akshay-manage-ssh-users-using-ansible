@@ -1,0 +1,22 @@
+---
+- hosts: all
+  gather_facts: true
+  tags: always
+  roles:
+  - { role: manageusers, tags: ['users']}
+
+- hosts: ['jumpbox']
+  roles:
+  - { role: manageusers, tags: ['users']}
+
+- hosts: ['mongo']
+  roles:
+  - { role: manageusers, tags: ['users']}
+
+- hosts: ['redis']
+  roles:
+  - { role: manageusers, tags: ['users']}
+
+- hosts: ['web']
+  roles:
+  - { role: installnettools, tags: ['web']}

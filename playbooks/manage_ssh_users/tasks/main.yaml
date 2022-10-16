@@ -1,0 +1,72 @@
+---
+- name: "Create Admin Group"
+  group:
+    name: "{{ item.group | default('user') }}"
+    state: present
+  become: true
+  when: adminusers is defined
+  with_items: "{{ adminusers }}"
+
+- name: "Create Admins"
+  user:
+    name: "{{ item.user }}"
+    groups: "{{ item.group | default('user') }}"
+    shell: "/bin/bash"
+    password: "*"
+  when: adminusers is defined
+  with_items: "{{ adminusers }}"
+  become: true
+  ignore_errors: yes
+
+- name: "SSH Authorization keys for Admins"
+  authorized_key:
+    user: "{{ item.user }}"
+    key: "{{ lookup('file', '~/Downloads/noon-data/ansible-demo' + '/sshkeys/' + item.user + '.pub') }}"
+    exclusive: yes
+  become: true
+  when: adminusers is defined
+  with_items: "{{ adminusers }}"
+
+- name: "Create User Group"
+  group:
+    name: "{{ item.group | default('user') }}"
+    state: present
+  become: true
+  when: users is defined
+  with_items: "{{ users }}"
+
+- name: "Create Users"
+  user:
+    name: "{{ item.user }}"
+    groups: "{{ item.group | default('user') }}"
+    shell: "/bin/bash"
+    password: "*"
+  ignore_errors: yes
+  become: true
+  when: users is defined
+  with_items: "{{ users }}"
+
+- name: "SSH Authorization keys for Users"
+  authorized_key:
+    user: "{{ item.user }}"
+    key: "{{ lookup('file', '~/Downloads/noon-data/ansible-demo' + '/sshkeys/' + item.user + '.pub') }}"
+    exclusive: yes
+  become: true
+  when: users is defined
+  with_items: "{{ users }}"
+
+- name: "Update sudoers file"
+  template: src={{ item.src }} dest={{ item.dest }}
+            owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }}
+  become: true
+  with_items:
+  - { src: 'etc/sudoers', dest: '/etc/sudoers', owner: 'root', group: 'root', mode: '0440' }
+
+- name: "Delete Users"
+  user:
+    name: "{{ item.user }}"
+    state: absent
+    remove: yes
+  become: true
+  when: exusers is defined
+  with_items: "{{ exusers }}"

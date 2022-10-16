@@ -1,0 +1,2 @@
+[jumpbox]
+jumpbox-1 ansible_user=ubuntu ansible_host=13.235.74.220 ansible_ssh_private_key_file=private.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'

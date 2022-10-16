@@ -1,0 +1,7 @@
+---
+users:
+  - { user: 'user1', group: 'admins' }
+  - { user: 'user2', group: 'users' }
+
+exusers:
+  - { user: 'user3'}
