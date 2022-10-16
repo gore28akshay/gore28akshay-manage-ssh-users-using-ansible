@@ -1,5 +1,5 @@
 ### Ansible to manage ssh users in infrastruture ###
-** Folder Structure **
+**Folder Structure**
 ```
 .
 ├── inv
